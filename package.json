@@ -1,0 +1,11 @@
+{
+  "name": "exambook",
+  "version": "1.0.0",
+  "description": "For Online Test",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
