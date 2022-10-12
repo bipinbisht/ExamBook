@@ -1,8 +1,9 @@
 const express = require("express");
 
 const router = express.Router();
-const { createExam } = require("../controllers/exam");
+const { createExam, getAllExams, getExam } = require("../controllers/exam");
 
-router.route("/").post(createExam);
+router.route("/").post(createExam).get(getAllExams);
+router.route("/:id").get(getExam);
 
 module.exports = router;
