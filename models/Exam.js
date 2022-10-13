@@ -18,6 +18,19 @@ const ExamSchema = new mongoose.Schema({
     ref: "Teacher",
     required: [true, "Please provide teacher"],
   },
+  credit: {
+    type: Number,
+    required: true,
+    get: getCredit,
+    set: setCredit,
+  },
 });
+function getCredit(num) {
+  return (num / 100).toFixed(2);
+}
+
+function setCredit(num) {
+  return num * 100;
+}
 
 module.exports = mongoose.model("Exam", ExamSchema);

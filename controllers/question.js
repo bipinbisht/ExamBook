@@ -1,6 +1,7 @@
 const Question = require("../models/Question");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
+const { json } = require("express");
 
 const addQuestion = async (req, res) => {
   console.log(req.body);
@@ -14,7 +15,18 @@ const getAllQuestion = async (req, res) => {
   if (!questions) throw new NotFoundError("No question available");
   res.status(StatusCodes.OK).json({ questions, count: questions.length });
 };
+
+const getQuestion = async (req, res) => {
+  const {
+    params: { id: questionId },
+  } = req;
+  const question = await Question.findOne({ _id: questionId });
+  if (!question)
+    throw new NotFoundError(`No question available with id ${questionId}`);
+  res.status(StatusCodes.OK).json(question);
+};
 module.exports = {
   addQuestion,
   getAllQuestion,
+  getQuestion,
 };

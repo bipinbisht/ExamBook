@@ -22,6 +22,7 @@ const register = async (req, res) => {
       userId: teacher._id,
       role: teacher.role,
     };
+
     const token = createJWT({ payload: tokenUser });
     res.status(StatusCodes.CREATED).json({ teacher: tokenUser, token });
   } else {
