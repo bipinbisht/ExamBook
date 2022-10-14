@@ -16,6 +16,9 @@ const authenticateUser = require("./middleware/authentication");
 const authRouter = require("./routes/auth");
 const examRouter = require("./routes/exam");
 const questionRouter = require("./routes/questionRoute");
+const adminRouter = require("./routes/adminRoute");
+const studentRouter = require("./routes/studentRoute");
+const teacherRoute = require("./routes/teacherRoute");
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -38,8 +41,11 @@ app.get("/", (req, res) => {
 
 // routes
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/exam", authenticateUser, examRouter);
 app.use("/api/v1/question", authenticateUser, questionRouter);
+app.use("/api/v1/student", authenticateUser, studentRouter);
+app.use("/api/v1/teacher", authenticateUser, teacherRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

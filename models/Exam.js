@@ -1,30 +1,33 @@
 const mongoose = require("mongoose");
 
-const ExamSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
+const ExamSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
 
-  time: {
-    type: Number,
-    required: true,
+    time: {
+      type: Number,
+      required: true,
+    },
+    questions: {
+      type: Number,
+    },
+    createdBy: {
+      type: mongoose.Types.ObjectId,
+      ref: "Teacher",
+      required: [true, "Please provide teacher"],
+    },
+    credit: {
+      type: Number,
+      required: true,
+      get: getCredit,
+      set: setCredit,
+    },
   },
-  questions: {
-    type: Number,
-  },
-  createdBy: {
-    type: mongoose.Types.ObjectId,
-    ref: "Teacher",
-    required: [true, "Please provide teacher"],
-  },
-  credit: {
-    type: Number,
-    required: true,
-    get: getCredit,
-    set: setCredit,
-  },
-});
+  { timestamps: true }
+);
 function getCredit(num) {
   return (num / 100).toFixed(2);
 }

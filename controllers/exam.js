@@ -3,13 +3,14 @@ const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, NotFoundError } = require("../errors");
 
 const createExam = async (req, res) => {
-  const teacher = req.teacher;
+  const teacher = req.user;
+  console.log(teacher);
   req.body.createdBy = teacher.userId;
   const exam = await Exam.create(req.body);
   res.status(StatusCodes.CREATED).json({ exam });
 };
 const getAllExams = async (req, res) => {
-  const teacher = req.teacher;
+  const teacher = req.user;
   const exams = await Exam.find({ createdBy: teacher.userId });
   if (!exams) {
     throw new NotFoundError("No exams found!!!");
