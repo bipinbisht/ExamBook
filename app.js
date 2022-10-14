@@ -19,6 +19,7 @@ const questionRouter = require("./routes/questionRoute");
 const adminRouter = require("./routes/adminRoute");
 const studentRouter = require("./routes/studentRoute");
 const teacherRoute = require("./routes/teacherRoute");
+const otpRouter = require("./routes/otpRoute");
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -46,6 +47,7 @@ app.use("/api/v1/exam", authenticateUser, examRouter);
 app.use("/api/v1/question", authenticateUser, questionRouter);
 app.use("/api/v1/student", authenticateUser, studentRouter);
 app.use("/api/v1/teacher", authenticateUser, teacherRoute);
+app.use("/api/v1/otp", authenticateUser, otpRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
