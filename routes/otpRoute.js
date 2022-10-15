@@ -3,11 +3,8 @@ const router = express.Router();
 
 const {
   OtpForPasswordReset,
-  otpForRegister,
-  verifyOtp,
+  verifyOtpRegister,
 } = require("../controllers/otp");
-
-router.route("/otp-register").post(otpForRegister);
 router.route("/forgot-password").post(OtpForPasswordReset);
-router.route("/verify-otp").post(verifyOtp);
+router.route("/verify-otp-register").post(verifyOtpRegister);
 module.exports = router;

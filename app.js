@@ -47,7 +47,7 @@ app.use("/api/v1/exam", authenticateUser, examRouter);
 app.use("/api/v1/question", authenticateUser, questionRouter);
 app.use("/api/v1/student", authenticateUser, studentRouter);
 app.use("/api/v1/teacher", authenticateUser, teacherRoute);
-app.use("/api/v1/otp", authenticateUser, otpRouter);
+app.use("/api/v1/otp", otpRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

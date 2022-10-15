@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const { NotFoundError, BadRequestError } = require("../errors");
 
-const sendEmail = async ({ email, OTP }) => {
+const sendEmail = async ({ email, emailBody }) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
@@ -16,8 +16,7 @@ const sendEmail = async ({ email, OTP }) => {
     from: `"Exam Bell" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "Change Password",
-    html: `<p>Hi your otp <strong style ="color:blue" >${OTP}</strong> for change password
-    is valid till 5 minutes...</p>`,
+    html: emailBody,
   };
 
   await transporter.sendMail(mailOptions, (err) => {

@@ -2,32 +2,18 @@ const Student = require("../models/Student");
 const Teacher = require("../models/Teacher");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
-const { createJWT, isTokenValid } = require("../utils");
+const { createJWT, sendEmail, generateOtp } = require("../utils");
 // register controller
-const register = async (req, res) => {
-  const { role } = req.body;
-  if (role === "student") {
-    const student = await Student.create({ ...req.body });
-    const tokenUser = {
-      name: student.name,
-      userId: student._id,
-      role: student.role,
-    };
-    const token = createJWT({ payload: tokenUser });
-    res.status(StatusCodes.CREATED).json({ student: tokenUser, token });
-  } else if (role === "teacher") {
-    const teacher = await Teacher.create({ ...req.body });
-    const tokenUser = {
-      name: teacher.name,
-      userId: teacher._id,
-      role: teacher.role,
-    };
-
-    const token = createJWT({ payload: tokenUser });
-    res.status(StatusCodes.CREATED).json({ teacher: tokenUser, token });
-  } else {
-    throw new BadRequestError("please provide role");
-  }
+const registerWithOtp = async (req, res) => {
+  const { email } = req.body;
+  if (!email) throw new BadRequestError("No email provided");
+  const OTP = await generateOtp(req.body.email);
+  const emailBody = `<h3 style="color:gray">Hi your otp <strong style ="color:blue;font-size:24px" >${OTP}</strong> for Registration
+    is valid till 5 minutes...</h3>`;
+  sendEmail({ email, emailBody });
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: "Otp sent successfully", data: req.body, otp: OTP });
 };
 
 // login controller
@@ -76,6 +62,6 @@ const login = async (req, res) => {
 };
 
 module.exports = {
-  register,
   login,
+  registerWithOtp,
 };
