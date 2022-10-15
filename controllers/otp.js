@@ -6,6 +6,7 @@ const Teacher = require("../models/Teacher");
 const otpGenerator = require("otp-generator");
 const { NotFoundError, BadRequestError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
+const { sendEmail } = require("../utils");
 
 //send otp for forgot password
 const OtpForPasswordReset = async (req, res) => {
@@ -31,7 +32,10 @@ const OtpForPasswordReset = async (req, res) => {
   otp.otp = await bcrypt.hash(otp.otp, salt);
   const result = await otp.save();
   //   console.log(result);
-  return res.status(StatusCodes.OK).json({ msg: "Otp sent successfully" });
+  await sendEmail({ email, OTP });
+  return res
+    .status(StatusCodes.OK)
+    .json({ msg: "Otp sent successfully", email: email, otp: OTP });
 };
 
 const otpForRegister = async (req, res) => {

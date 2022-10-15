@@ -8,6 +8,6 @@ const {
 } = require("../controllers/otp");
 
 router.route("/otp-register").post(otpForRegister);
-router.route("/otp-password").post(OtpForPasswordReset);
+router.route("/forgot-password").post(OtpForPasswordReset);
 router.route("/verify-otp").post(verifyOtp);
 module.exports = router;
