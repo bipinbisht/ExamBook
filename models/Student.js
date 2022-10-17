@@ -1,14 +1,38 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { array } = require("joi");
 
 const StudentSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
       required: [true, "Please provide name"],
       maxlength: 50,
       minlength: 3,
+    },
+    lastName: {
+      type: String,
+      required: [true, "Please provide name"],
+      maxlength: 50,
+      minlength: 3,
+    },
+    birthDate: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+    },
+    zipCode: {
+      type: String,
+    },
+    schoolName: {
+      type: String,
     },
     email: {
       type: String,
@@ -19,10 +43,25 @@ const StudentSchema = new mongoose.Schema(
       ],
       unique: true,
     },
+    userName: {
+      type: String,
+      minlength: 3,
+    },
+    mobileNumber: {
+      type: String,
+      maxlength: 10,
+      required: true,
+    },
     password: {
       type: String,
       required: [true, "Please provide password"],
       minlength: 6,
+    },
+    preparingFor: {
+      type: Array,
+    },
+    education: {
+      type: String,
     },
     role: {
       type: String,
@@ -33,7 +72,7 @@ const StudentSchema = new mongoose.Schema(
       default: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "Student", versionKey: false }
 );
 // hashing password
 StudentSchema.pre("save", async function () {

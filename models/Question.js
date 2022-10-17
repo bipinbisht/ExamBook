@@ -32,7 +32,7 @@ const QuestionSchema = new mongoose.Schema(
       ref: "Exam",
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "Question", versionKey: false }
 );
 
 module.exports = mongoose.model("Question", QuestionSchema);

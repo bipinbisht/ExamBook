@@ -3,11 +3,31 @@ const bcrypt = require("bcryptjs");
 
 const TeacherSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
       required: [true, "Please provide name"],
       maxlength: 50,
       minlength: 3,
+    },
+    lastName: {
+      type: String,
+      required: [true, "Please provide name"],
+      maxlength: 50,
+      minlength: 3,
+    },
+    birthDate: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+    },
+    zipCode: {
+      type: String,
     },
     email: {
       type: String,
@@ -17,6 +37,18 @@ const TeacherSchema = new mongoose.Schema(
         "Please provide a valid email",
       ],
       unique: true,
+    },
+    userName: {
+      type: String,
+      minlength: 3,
+    },
+    education: {
+      type: String,
+    },
+    mobileNumber: {
+      type: String,
+      maxlength: 10,
+      required: true,
     },
     password: {
       type: String,
@@ -32,7 +64,7 @@ const TeacherSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "Teacher", versionKey: false }
 );
 //hashing password
 TeacherSchema.pre("save", async function () {

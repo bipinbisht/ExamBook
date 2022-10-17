@@ -26,7 +26,7 @@ const ExamSchema = new mongoose.Schema(
       set: setCredit,
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "Exam", versionKey: false }
 );
 function getCredit(num) {
   return (num / 100).toFixed(2);

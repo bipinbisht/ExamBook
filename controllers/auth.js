@@ -26,7 +26,7 @@ const login = async (req, res) => {
   if (role === "student") {
     const student = await Student.findOne({ email });
     if (!student) {
-      throw new UnauthenticatedError("Invalid Credentials");
+      throw new UnauthenticatedError("User is not Registered");
     }
     // compare password
     const isPasswordCorrect = await student.comparePassword(password);
@@ -43,7 +43,7 @@ const login = async (req, res) => {
   } else if (role === "teacher") {
     const teacher = await Teacher.findOne({ email });
     if (!teacher) {
-      throw new UnauthenticatedError("Invalid Credentials");
+      throw new UnauthenticatedError("User is not Registered");
     }
     // compare password
     const isPasswordCorrect = await teacher.comparePassword(password);

@@ -18,7 +18,7 @@ const OtpSchema = new mongoose.Schema(
       }, //after 5 min it deleted automatically
     },
   },
-  { timestamps: true }
+  { timestamps: true, collection: "Otp", versionKey: false }
 );
 
 module.exports = new mongoose.model("Otp", OtpSchema);

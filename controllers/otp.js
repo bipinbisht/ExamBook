@@ -3,7 +3,7 @@ const _ = require("lodash");
 const bcrypt = require("bcryptjs");
 const Student = require("../models/Student");
 const Teacher = require("../models/Teacher");
-const { sendEmail, generateOtp } = require("../utils");
+const { sendEmail, generateOtp, createJWT } = require("../utils");
 const {
   NotFoundError,
   BadRequestError,
@@ -26,7 +26,15 @@ const OtpForForgotPassword = async (req, res) => {
     const emailBody = `<h3 style="color:gray">Hi your otp <strong style ="color:blue;font-size:24px" >${otp}</strong> for forgot password
     is valid till 5 minutes...</h3>`;
     sendEmail({ email, emailBody });
-    res.status(StatusCodes.OK).json({ msg: "otp sent successfully", student });
+    const data = {
+      userId: student._id,
+      email: email,
+      name: `${student.firstName} ${student.lastName}`,
+      role: student.role,
+    };
+    res
+      .status(StatusCodes.OK)
+      .json({ msg: "otp sent successfully", data, otp: otp });
   }
   if (role === "teacher") {
     const teacher = await Teacher.findOne({ email: email });
@@ -36,32 +44,33 @@ const OtpForForgotPassword = async (req, res) => {
     const emailBody = `<h3 style="color:gray">Hi your otp <strong style ="color:blue;font-size:24px" >${otp}</strong> for forgot password
     is valid till 5 minutes...</h3>`;
     sendEmail({ email, emailBody });
+    const data = {
+      userId: teacher._id,
+      email: email,
+      name: `${teacher.firstName} ${teacher.lastName}`,
+      role: teacher.role,
+    };
     res
       .status(StatusCodes.OK)
-      .json({ msg: "otp sent successfully", teacher, otp: otp });
+      .json({ msg: "otp sent successfully", data, otp: otp });
   }
 };
 //(2)
 const verifyOtpOnForgotPassword = async (req, res) => {
-  const { _id, role, email, otp, password } = req.body;
+  const { email } = req.body.data;
+  const { data } = req.body;
   const otpHolder = await Otp.find({
     email: email,
   });
   if (otpHolder.length === 0)
     throw new BadRequestError("Your otp has been expired!");
   const rightOtpFind = otpHolder[otpHolder.length - 1];
-  const isOtpValid = await bcrypt.compare(otp, rightOtpFind.otp);
+  const isOtpValid = await bcrypt.compare(req.body.otp, rightOtpFind.otp);
   if (rightOtpFind.email === email && isOtpValid) {
     const OtpDelete = await Otp.deleteMany({
       email: rightOtpFind.email,
     });
-    const user = {
-      userId: _id,
-      role: role,
-      email: email,
-      password: password,
-    };
-    res.status(StatusCodes.OK).json({ user, msg: "otp verified successfully" });
+    res.status(StatusCodes.OK).json({ data, msg: "otp verified successfully" });
   } else {
     throw new BadRequestError("Your otp was incorrect!");
   }
@@ -69,7 +78,7 @@ const verifyOtpOnForgotPassword = async (req, res) => {
 //(3)
 const setNewPassword = async (req, res) => {
   const { newPassword } = req.body;
-  const { userId, role } = req.body.user;
+  const { userId, role } = req.body.data;
   console.log("after old password");
   if (!newPassword) throw new BadRequestError("Please provide password");
   if (role === "teacher") {
@@ -89,19 +98,19 @@ const setNewPassword = async (req, res) => {
 };
 
 const verifyOtpRegister = async (req, res) => {
-  const { name, role, email, otp } = req.body;
+  const { name, role, email } = req.body.data;
   const otpHolder = await Otp.find({
     email: email,
   });
   if (otpHolder.length === 0)
     throw new BadRequestError("Your otp has been expired!");
   const rightOtpFind = otpHolder[otpHolder.length - 1];
-  const isOtpValid = await bcrypt.compare(otp, rightOtpFind.otp);
+  const isOtpValid = await bcrypt.compare(req.body.otp, rightOtpFind.otp);
   if (rightOtpFind.email === email && isOtpValid) {
     const OtpDelete = await Otp.deleteMany({
       email: rightOtpFind.email,
     });
-    const data = req.body;
+    const data = req.body.data;
     const token = await roleCheck(data);
     const user = {
       name: name,
@@ -120,7 +129,6 @@ const roleCheck = async (data) => {
   console.log(data);
   const { role } = data;
   if (role === "student") {
-    console.log("inside studnet role");
     const student = await Student.create(data);
     const tokenUser = {
       name: student.name,
@@ -130,7 +138,6 @@ const roleCheck = async (data) => {
     const token = createJWT({ payload: tokenUser });
     return token;
   } else if (role === "teacher") {
-    console.log("inside teacher role");
     const teacher = await Teacher.create(data);
     const tokenUser = {
       name: teacher.name,
