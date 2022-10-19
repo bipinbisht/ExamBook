@@ -3,6 +3,9 @@ const Teacher = require("../models/Teacher");
 const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 const { createJWT, sendEmail, generateOtp } = require("../utils");
+
+const subject = "Register User";
+
 // register controller
 const registerWithOtp = async (req, res) => {
   const { email } = req.body;
@@ -10,7 +13,7 @@ const registerWithOtp = async (req, res) => {
   const OTP = await generateOtp(req.body.email);
   const emailBody = `<h3 style="color:gray">Hi your otp <strong style ="color:blue;font-size:24px" >${OTP}</strong> for Registration
     is valid till 5 minutes...</h3>`;
-  sendEmail({ email, emailBody });
+  sendEmail({ email, emailBody, subject });
   res
     .status(StatusCodes.OK)
     .json({ msg: "Otp sent successfully", data: req.body, otp: OTP });

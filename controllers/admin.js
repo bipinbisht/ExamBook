@@ -25,7 +25,7 @@ const getAllStudent = async (req, res) => {
       return {
         _id: student._id,
         createdAt: newDate,
-        name: student.name,
+        name: `${student.firstName} ${student.lastName}`,
         email: student.email,
         role: student.role,
         isActive: student.isActive,
@@ -47,7 +47,7 @@ const getAllTeacher = async (req, res) => {
       return {
         _id: teacher._id,
         createdAt: newDate,
-        name: teacher.name,
+        name: `${teacher.firstName} ${teacher.lastName}`,
         email: teacher.email,
         role: teacher.role,
         isActive: teacher.isActive,

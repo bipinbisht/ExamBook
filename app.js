@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 const xss = require("xss-clean");
 const rateLimiter = require("express-rate-limit");
+const morgan = require("morgan");
 
 const express = require("express");
 const app = express();
@@ -36,9 +37,10 @@ app.use(express.json());
 app.use(helmet());
 app.use(cors());
 app.use(xss());
+app.use(morgan("tiny"));
 
 app.get("/", (req, res) => {
-  res.send("<h1>Exam Book</h1>");
+  res.send("<h1>Exam Bell</h1>");
 });
 
 // routes

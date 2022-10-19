@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const { NotFoundError, BadRequestError } = require("../errors");
 
-const sendEmail = async ({ email, emailBody }) => {
+const sendEmail = async ({ email, emailBody, subject }) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     host: "smtp.gmail.com",
@@ -15,7 +15,7 @@ const sendEmail = async ({ email, emailBody }) => {
   var mailOptions = {
     from: `"Exam Bell" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: "Change Password",
+    subject: `${subject}`,
     html: emailBody,
   };
 

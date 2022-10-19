@@ -12,6 +12,8 @@ const {
 } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 
+const subject = "Change Password";
+
 //send otp for forgot password (1st)
 const OtpForForgotPassword = async (req, res) => {
   const { email, role } = req.body;
@@ -25,7 +27,7 @@ const OtpForForgotPassword = async (req, res) => {
     const otp = await generateOtp(email);
     const emailBody = `<h3 style="color:gray">Hi your otp <strong style ="color:blue;font-size:24px" >${otp}</strong> for forgot password
     is valid till 5 minutes...</h3>`;
-    sendEmail({ email, emailBody });
+    sendEmail({ email, emailBody, subject });
     const data = {
       userId: student._id,
       email: email,
@@ -43,7 +45,7 @@ const OtpForForgotPassword = async (req, res) => {
     const otp = await generateOtp(email);
     const emailBody = `<h3 style="color:gray">Hi your otp <strong style ="color:blue;font-size:24px" >${otp}</strong> for forgot password
     is valid till 5 minutes...</h3>`;
-    sendEmail({ email, emailBody });
+    sendEmail({ email, emailBody, subject });
     const data = {
       userId: teacher._id,
       email: email,
