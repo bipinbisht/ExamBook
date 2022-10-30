@@ -22,6 +22,7 @@ const studentRouter = require("./routes/studentRoute");
 const teacherRoute = require("./routes/teacherRoute");
 const otpRouter = require("./routes/otpRoute");
 const passwordRouter = require("./routes/passwordRoute");
+const paymentRouter = require("./routes/paymentRoute");
 // error handler
 const notFoundMiddleware = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -52,6 +53,7 @@ app.use("/api/v1/question", authenticateUser, questionRouter);
 app.use("/api/v1/student", authenticateUser, studentRouter);
 app.use("/api/v1/teacher", authenticateUser, teacherRoute);
 app.use("/api/v1/password", authenticateUser, passwordRouter);
+app.use("/api/v1/pay", paymentRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
