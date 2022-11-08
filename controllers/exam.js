@@ -9,7 +9,7 @@ const createExam = async (req, res) => {
   const exam = await Exam.create(req.body);
   res.status(StatusCodes.CREATED).json({ exam });
 };
-const getAllExams = async (req, res) => {
+const getAllTeacherExams = async (req, res) => {
   const teacher = req.user;
   const exams = await Exam.find({ createdBy: teacher.userId });
   if (!exams) {
@@ -27,8 +27,16 @@ const getExam = async (req, res) => {
   }
   res.status(StatusCodes.OK).json(exam);
 };
+
+const getAllExams = async (req, res) => {
+  console.log("Inside exams");
+  const exams = await Exam.find({});
+  console.log(exams);
+  res.status(StatusCodes.OK).json(exams);
+};
 module.exports = {
   createExam,
-  getAllExams,
+  getAllTeacherExams,
   getExam,
+  getAllExams,
 };

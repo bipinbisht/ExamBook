@@ -7,20 +7,8 @@ const QuestionSchema = new mongoose.Schema(
       required: true,
       minlength: 3,
     },
-    a: {
-      type: String,
-      required: true,
-    },
-    b: {
-      type: String,
-      required: true,
-    },
-    c: {
-      type: String,
-      required: true,
-    },
-    d: {
-      type: String,
+    options: {
+      type: Array,
       required: true,
     },
     answer: {
