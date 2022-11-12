@@ -76,9 +76,35 @@ const changeStatus = async (req, res) => {
   res.status(StatusCodes.OK).json({ status });
 };
 
+const getStudentDetails = async (req, res) => {
+  console.log(req.params);
+  const studentId = req.params.id;
+  if (studentId === " ")
+    throw new BadRequestError(" studentId field cannot be empty");
+
+  const data = await Student.find({ _id: studentId });
+  if (!data) throw new NotFoundError(`No student found with id ${studentId}`);
+
+  res.status(StatusCodes.OK).json(data);
+};
+
+const getTeacherDetails = async (req, res) => {
+  console.log(req.params);
+  const teacherId = req.params.id;
+  if (teacherId === " ")
+    throw new BadRequestError(" teacherId field cannot be empty");
+
+  const data = await Teacher.find({ _id: teacherId });
+  if (!data) throw new NotFoundError(`No student found with id ${teacherId}`);
+
+  res.status(StatusCodes.OK).json(data);
+};
+
 module.exports = {
   getAllStudent,
   getAllTeacher,
   adminLogin,
   changeStatus,
+  getStudentDetails,
+  getTeacherDetails,
 };
