@@ -71,6 +71,16 @@ const StudentSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    myExams: {
+      type: Array,
+    },
+    wallet: {
+      type: Number,
+      default: 0,
+    },
+    state: {
+      type: String,
+    },
   },
   { timestamps: true, collection: "Student", versionKey: false }
 );

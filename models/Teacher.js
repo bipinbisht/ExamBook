@@ -63,6 +63,10 @@ const TeacherSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    state: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true, collection: "Teacher", versionKey: false }
 );
