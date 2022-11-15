@@ -19,8 +19,17 @@ const getStudent = async (req, res) => {
 
 const getAllCategoryForExam = async (req, res) => {
   // Nda,afcat,cds,mcat
-  const examCategory = ["NDA", "AFCAT", "CDS", "MCAT"];
+  const examCategory = ["NDA", "AFCAT", "CDS", "MCAT", "CAD"];
   res.status(StatusCodes.OK).json(examCategory);
+};
+
+const getAllExamByCategory = async (req, res) => {
+  const { category } = req.body;
+  const exam = await Exam.find({}).where("examCategory").equals(category);
+  if (exam.length === 0) {
+    throw new NotFoundError(`No Exam found `);
+  }
+  res.status(StatusCodes.OK).json(exam);
 };
 
 const buyExam = async (req, res) => {
@@ -49,11 +58,11 @@ const buyExam = async (req, res) => {
   student.myExams = studentExams;
   await student.save();
   console.log(updatedwallet);
-
   res.status(StatusCodes.OK).json(student);
 };
 module.exports = {
   getStudent,
   getAllCategoryForExam,
   buyExam,
+  getAllExamByCategory,
 };

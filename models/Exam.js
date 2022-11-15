@@ -25,6 +25,10 @@ const ExamSchema = new mongoose.Schema(
       get: getCredit,
       set: setCredit,
     },
+    examCategory: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true, collection: "Exam", versionKey: false }
 );
